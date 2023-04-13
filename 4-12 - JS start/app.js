@@ -10,3 +10,4 @@ else if (age < 18) {
 else {
     console.log("Exactly 18");
 }
+console.log(undefined === null);
