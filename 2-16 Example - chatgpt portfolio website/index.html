@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Software Engineer Portfolio</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+      </nav>
+      <h1>Software Engineer Portfolio</h1>
+    </header>
+
+    <main>
+      <section id="hero">
+        <div class="hero-image"></div>
+        <div class="hero-text">
+          <h2>Hi, I'm John Doe</h2>
+          <p>I'm a software engineer with experience in web development, mobile development, and machine learning. Welcome to my portfolio!</p>
+        </div>
+      </section>
+
+      <section id="projects">
+        <h2>Projects</h2>
+        <div class="project">
+          <h3>Project 1</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis nibh ipsum. Praesent vel sem in sapien molestie iaculis. Fusce vitae mauris suscipit, aliquam arcu vel, ultricies ex.</p>
+          <a href="#">View Project</a>
+        </div>
+        <div class="project">
+          <h3>Project 2</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis nibh ipsum. Praesent vel sem in sapien molestie iaculis. Fusce vitae mauris suscipit, aliquam arcu vel, ultricies ex.</p>
+          <a href="#">View Project</a>
+        </div>
+        <div class="project">
+          <h3>Project 3</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis nibh ipsum. Praesent vel sem in sapien molestie iaculis. Fusce vitae mauris suscipit, aliquam arcu vel, ultricies ex.</p>
+          <a href="#">View Project</a>
+        </div>
+      </section>
+
+      <section id="about">
+        <h2>About Me</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis nibh ipsum. Praesent vel sem in sapien molestie iaculis. Fusce vitae mauris suscipit, aliquam arcu vel, ultricies ex.</p>
+      </section>
+
+      <section id="contact">
+        <h2>Contact Me</h2>
+        <form action="#" method="post">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" required></textarea>
+          <input type="submit" value="Send">
+        </form>
+      </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 Software Engineer Portfolio</p>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Toggle the mobile menu
+            $(".hamburger").click(function() {
+                $("nav ul").slideToggle();
+            });
+
+            // Smooth scroll to sections
+            $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(event) {
+                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                    if (target.length) {
+                        event.preventDefault();
+                        $('html, body').animate({
+                            scrollTop: target.offset().top
+                        }, 1000);
+                    }
+                }
+            });
+
+            // Show/hide project details
+            $(".project").click(function() {
+                $(this).find("p").slideToggle();
+            });
+        });
+    </script>
+</body>
+</html>

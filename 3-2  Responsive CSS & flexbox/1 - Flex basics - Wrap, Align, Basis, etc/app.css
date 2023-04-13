@@ -1,0 +1,186 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+h1, h2 {
+    text-align: center;
+}
+#container {
+    background-color: #003049;
+    width: 90%;
+    height: 600px;
+    margin: 0 auto;
+    border: 5px solid #003049;
+
+    display: flex;
+    /* flex-direction: column-reverse; */ /* basically just flipped the container upside down, by making the top contents start from the bottom */
+    flex-direction: row; /* default */
+    justify-content: flex-start; /* default: start from left or top */
+    justify-content: flex-end; /* start from right or bottom */
+    justify-content: center; /* centers items within a container, assuming the display property of the container is set to flex */
+    justify-content: space-between; /* distributes extra space evenly between each item, but not between items and their container */
+    justify-content: space-around; /* gives equal space on each side of each element, so the space between end element and container is half that of between elements */
+    justify-content: space-evenly; /* fixes the above issue with end space */
+
+}
+
+#container div {
+    width: 100px;
+    height: 100px;
+}
+
+#container2 {
+    background-color: #003049;
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+    border: 5px solid #003049;
+    display: flex;
+    flex-wrap: wrap; /* keeps the full size of the items, and wraps them to the next row or column when space runs out */
+    flex-wrap: wrap-reverse; /* reverses the cross axis */
+    justify-content: space-evenly;
+}
+#container2 div {
+    width: 200px;
+    height: 100px;
+}
+
+#container3 {
+    background-color: #003049;
+    width: 90%;
+    height: 500px;
+    margin: 0 auto;
+    border: 5px solid #003049;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* align controls where items sit along the cross axis. this wont change where they sit on the main axis, but will move them to the opposite side of the cross axis */
+    align-items: center;
+    /* Note: you can align something vertically and horizontally by doing justify content center and align items center */
+    align-items: baseline; /* this will align items (the divs inside this container) such that the text inside each item is aligned */
+    /* Note: if u have text in different elements and want the text to be aligned, use baseline */
+}
+#container3 div {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-size: 4em;
+}
+
+#container4 {
+    background-color: #003049;
+    width: 90%;
+    height: 250px;
+    margin: 0 auto;
+    margin-top: 1rem;
+    border: 5px solid #003049;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+#container4 div {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-size: 4em;
+}
+
+/* Align content controls the space between rows or columns (only when stuff is wrapping to a new row or column) */
+#container5 {
+    background-color: #003049;
+    width: 90%;
+    height: 250px;
+    margin: 0 auto;
+    margin-top: 1rem;
+    border: 5px solid #003049;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-content: flex-start;
+/*     align-content: space-around;
+    align-content: space-evenly; */
+}
+#container5 div {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-size: 4em;
+}
+
+#container6 {
+    background-color: #003049;
+    width: 90%;
+    height: 250px;
+    margin: 0 auto;
+    margin-top: 1rem;
+    border: 5px solid #003049;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+#container6 div:nth-of-type(3) {
+    align-self: center; /* item will align itself along the cross axis */
+}
+#container6 div:nth-of-type(1) {
+    align-self: end; /* item will align itself along the cross axis */
+}
+#container6 div {
+    width: 100px;
+    height: 100px;
+}
+
+#container7 {
+    background-color: #003049;
+    width: 90%;
+    /* height: 250px; */
+    margin: 0 auto;
+    margin-top: 1rem;
+    border: 5px solid #003049;
+    display: flex;
+    justify-content: center;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+}
+#container7 div {
+    width: 100px;
+    height: 100px;
+    flex-basis: 150px; /* its basically like setting the width, except if you change flex direction to column, it will be setting the height, so instead of setting width and height, we're setting main axis and cross axis */
+}
+#container7 div:nth-of-type(1) {
+    flex-grow: 1; /* this element will take up all the additional space */
+}
+#container7 div:nth-of-type(2) {
+    flex-grow: 1; /* this element will split the additional space with the above element */
+}
+#container7 div {
+    /* flex-grow: 1; */ /* now all elements will evenly distribute the additonal space */
+    /* max-width: 200px; */
+    min-width: 50px;
+}
+#container7 div:nth-of-type(5) {
+    flex-grow: 2; /* this element will take twice as much space as the other ones */
+}
+#container7 div:nth-of-type(2) {
+    flex-shrink: 2; 
+}
+
+main {
+    width: 80%;
+    margin: 0 auto;
+    border: 5px solid black;
+    height: 500px;
+    display: flex;
+}
+main .sidebar {
+    background-color: #6930c3;
+    /* border: 2px solid white; */
+    flex: 1 2 /* 25% */100px; /* grow | shrink | basis */
+}
+main .maincontent {
+    background-color: #80ffdb;
+    flex: 2 1 /* 50% */300px;
+}

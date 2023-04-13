@@ -1,0 +1,18 @@
+h3 {
+    color: aqua;
+}
+h2 {
+    color: teal;
+    background-color: plum; /* an h2 is a block level element, so it takes up all the available space of the container that it's in */
+}
+button {
+    background-color: blueviolet;
+    color: magenta;
+}
+p {
+    color: gray;
+    background: cyan; /* background without the -color is more powerful, you can do more with it */
+} 
+body {
+    background-color: papayawhip;
+}

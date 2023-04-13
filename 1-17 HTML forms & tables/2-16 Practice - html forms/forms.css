@@ -1,0 +1,70 @@
+/* this stuff applies to the header/nav */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+  }
+  nav {
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+  }
+  nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav li {
+    display: inline-block;
+    margin-right: 20px;
+  }
+  nav a {
+    color: #333;
+    text-decoration: none;
+  }
+
+/* this is stuff that applies across the whole page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+  }
+
+/* this is stuff for the textarea section */
+.fire {
+    background-color: #edf8fa;
+    font-size: 0.8rem;
+    letter-spacing: 1.6px;
+}
+.firelabel {
+    display: block;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+.firetextarea {
+    margin-left: 10px;
+    padding: 10px;
+    line-height: 1.5;
+    border-radius: 7px;
+    border: 1px solid #c8f1f8;
+    box-shadow: 2px 2px 3px #999;
+}
+.firesubmit {
+    margin-left: 5px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    border: 1px solid #a0b2b6;
+    letter-spacing: 1px;
+    font-size: 0.8rem;
+}
+.fireh3 {
+    margin-left: 5px;
+    margin-top: 5px; 
+}
+
+/* this is footer stuff */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }

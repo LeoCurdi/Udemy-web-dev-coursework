@@ -1,0 +1,42 @@
+
+
+.sec1 {
+    width: 80%;
+    height: 350px;
+    background-image: url("https://images.unsplash.com/photo-1542640244-7e672d6cef4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
+    background-size: cover; /* shrink the image down so at least one side is fully visible */
+    background-position: top; /* choose which part of the image will get cut off by declaring where it starts from */
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 6rem;
+    color: rgb(229, 229, 229);
+}
+
+.sec2 {
+    width: 80%;
+    height: 1000px;
+    background: /* cover (this will break it) */ center/cover no-repeat url("https://images.unsplash.com/photo-1542640244-7e672d6cef4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
+    margin: 0 auto;
+}
+
+.sec3 {
+    width: 80%;
+    height: 600px;
+    background: center/70% no-repeat url("https://images.unsplash.com/photo-1542640244-7e672d6cef4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"), blueviolet;
+    margin: 0 auto;
+}
+
+
+body {
+    font-family: Roboto, sans-serif;
+}
+
+h1 {
+    font-weight: 700;
+}
+p {
+    font-weight: 100;
+    font-style: italic;
+}

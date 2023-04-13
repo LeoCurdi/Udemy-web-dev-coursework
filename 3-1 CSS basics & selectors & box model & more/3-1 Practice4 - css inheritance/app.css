@@ -1,0 +1,24 @@
+
+/* all elements inside body will inherit tthe purple color, unless you specifically set the color of individual elements to overwrite it */
+body {
+    color: purple;
+}
+
+/* h2 {
+    color: blue;
+} */
+
+/* the h2's will inherit from section since it's closer than body */
+section {
+    color: aqua;
+}
+
+/* not all elements inherit things by default (like buttons and inputs) so they wont turn red by setting form to red */
+form {
+    color: red;
+}
+
+/* there is a way to manually set things to inherit. these attributes will now inherit color from the nearest parent that has a color */
+button, input {
+    color: inherit;
+}

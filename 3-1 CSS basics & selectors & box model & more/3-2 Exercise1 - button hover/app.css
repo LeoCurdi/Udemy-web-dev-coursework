@@ -1,0 +1,35 @@
+
+body {
+    font-family: 'Roboto', sans-serif;
+
+    /* the following is flexbox stuff that we havent learned yet */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+
+    background-color: #151b29;
+}
+
+/* pre hover */
+button {
+    background: none;
+    color: #ffa260;
+    border: 2px solid;
+    padding: 1em 2em;
+    font-size: 1em;
+
+    transition: transform .25s, color .25s, border-color .25s, box-shadow 0.25s; /* if u make it slower, it feels like things are lagging. .25s is even pushing it, it should be barely on the edge of noticable */
+}
+
+button:hover {
+    border-color: #f1ff5c;
+    color: white;
+
+    /* offsetX, offsetY, blurRadius, spreadRadius, color */
+    box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+
+    transform: translateY(-0.25em);
+
+    cursor: pointer;
+}

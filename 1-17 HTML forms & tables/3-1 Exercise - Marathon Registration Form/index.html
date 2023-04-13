@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>marathon registration form</title>
+</head>
+<body>
+    <h1>Marathon Registration!</h1>
+    <form action="#"> <!-- action is where youre sending the form to -->
+        <div>
+            <label for="first">First Name</label>
+            <input type="text" id="first" name="firstName" required> <!-- you can add placeholder text, but it should not replace the label, also name isnt useful in this example, but it would be useful if we were sending the completed forms somewhere -->
+            <label for="last">Last Name</label>
+            <input type="text" id="last" name="lastName" required>
+        </div>
+        <p>Select A Race</p>
+        <div> <!-- the divs in this context are forcing each radio button oonto a new line -->
+            <input type="radio" name="race" id="fivek" value="fivek"> <!-- type in "input:radio" to use emmet -->
+            <label for="fivek">Fun Run 5K</label> <!-- id should not start with a number -->    
+        </div>
+        <div>
+            <input type="radio" name="race" id="half" value="half"> <!-- we need value so when u submit the form, it says which choice was selected -->
+            <label for="half">Half Marathon</label>
+        </div>
+        <div>
+            <input type="radio" name="race" id="full" value="full">
+            <label for="full">Full Marathon</label>
+        </div>
+        <div style="margin-top: 10px;">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <div style="margin-top: 10px;">
+            <label for="ageGroup">Select Age Group</label>
+            <select name="ageGroup" id="ageGroup">
+                <option value="kids">under 18</option>
+                <option value="adults">18-30</option>
+                <option value="old">30-50</option>
+                <option value="seniors">50 plus</option>
+            </select>
+        </div>
+        <button style="margin-top: 10px;">Register</button>
+    </form>
+</body>
+</html>

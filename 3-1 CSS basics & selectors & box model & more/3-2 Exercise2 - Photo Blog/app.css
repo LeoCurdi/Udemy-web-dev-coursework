@@ -1,0 +1,26 @@
+
+/* 
+body {
+    margin: 0;
+    overflow-y: scroll;
+    text-align: center;
+}
+
+* {
+    box-sizing: border-box;
+} */
+
+img {
+    width: 30%; /* 30% + 30% + 30% = 90%, remainder = 10% */
+    margin: calc(10% / 6); /* 3 images * 2 sides = 6 total spots for margin, so 10% / 6 = 1.666%. need to go smaller tho bc the scroll bar fucks everything up */
+}
+
+nav {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    border-bottom: 2px solid #f1f1f1;
+    width: 30%;
+    margin-left: calc(10% / 6);
+    padding: .7rem 0;
+}

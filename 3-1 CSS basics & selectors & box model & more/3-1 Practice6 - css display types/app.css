@@ -1,0 +1,55 @@
+
+
+
+
+.inlineVsBlock {
+    background-color: aquamarine;
+    margin: 0;
+}
+
+/* h1's are block level elements, so they take up a full horizontal line, unless you set the display to inline */
+.inlineVsBlock h1 {
+    /* display: inline; */
+    padding: 50px;
+    margin: 50px;
+}
+
+.inlineVsBlock h1:nth-of-type(1) {
+    background-color: aqua;
+    border: 1px solid gray;
+}
+
+.inlineVsBlock h1:nth-of-type(2) {
+    background-color: rgb(77, 223, 223);
+    border: 1px solid gray;
+}
+
+/* spans are inline level elements, so they sit next to each other horizontally (inline), unless you set the display to block */
+.inlineVsBlock span {
+    border: 1px solid gray;
+    display: block;
+    background-color: rgb(63, 212, 143);
+}
+
+/* if an element has display inline, width, height are ignored, so good luck trying to modify width. padding and margin work horizontally, so youll give like a tab to the left and right, but nothing top and bottom */
+.inlineVsBlock p span {
+    border: 1px solid gray;
+    display: inline;
+    /* width: 500px; */
+    padding: 20px;
+    margin: 50px;
+}
+
+/* inline-block stuff */
+/* divs are a block level element */
+.inBlock {
+    height: 200px;
+    width: 200px;
+    background-color: blueviolet;
+    border: 1px solid black;
+    /* display: inline; *//* this will make the divs infinitely small becuase width and height arent respected for inline elements. we need inline-block */
+    display: inline-block;
+    margin: 15px;
+    /* display: none; */ /* this will hide the element, and make it take up no space on the page */
+}
+

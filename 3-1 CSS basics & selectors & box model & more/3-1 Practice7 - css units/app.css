@@ -1,0 +1,66 @@
+
+/* em's and rem's are relative units */
+
+section {
+    background-color: aquamarine;
+    width: 300px;
+    height: 300px;
+}
+
+div {
+    background-color: gray;
+    width: 50%;
+    height: 50%;
+}
+
+h1 {
+    font-size: 40px;
+    border: 1px solid black;
+    line-height: 200%; /* this will set the line height to double the font size */
+}
+
+/* if we set font size of an element to 1em, it will be the same as the parent's font size. 2em gets you double that */
+
+#ems {
+    font-size: 20px;
+}
+
+#ems h2 {
+    font-size: 2em; /* we gave h2's parent (article) 20px, so now h2 will have 40 */
+    margin-left: 1em; /* this is taking font size of self (h2) and giving it 1*fontsize */
+}
+
+#ems p { /* p has 1em by default, so 20px */
+    font-size: .6em;
+}
+
+button { /* setting up button like this lets it grow smoothly if you increase the article size */
+    font-size: 1em;
+    padding: 0 1em;
+    border-radius: 0.5em;
+    background-color: rgb(198, 143, 250);
+    color: white;
+}
+
+#ems ul {
+    font-size: .5em; /* this is going to make each innermore element 50% smaller than the last */
+}
+
+/* enter rems (root ems) */ 
+
+html {
+    font-size: 20px; /* this will change the font size of the root element, scaling everything that uses rems */
+}
+
+#rems h2{ /* rems is all based on the root element (the first element in the html header) */
+    font-size: 3rem;
+}
+
+#rems ul {
+    font-size: .8rem;
+}
+
+#rems .buttonEnlarger {
+    font-size: 3rem;
+    background-color: white;
+}

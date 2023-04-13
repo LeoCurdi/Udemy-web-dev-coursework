@@ -1,0 +1,161 @@
+
+/* color pallets: go to coolers.co
+1.  https://coolors.co/7400b8-6930c3-5e60ce-5390d9-4ea8de-48bfe3-56cfe1-64dfdf-72efdd-80ffdb
+
+--french-violet: #7400b8ff;
+--grape: #6930c3ff;
+--slate-blue: #5e60ceff;
+--united-nations-blue: #5390d9ff;
+--picton-blue: #4ea8deff;
+--aero: #48bfe3ff;
+--sky-blue: #56cfe1ff;
+--tiffany-blue: #64dfdfff;
+--turquoise: #72efddff;
+--aquamarine: #80ffdbff;
+
+2.  https://coolors.co/palette/10002b-240046-3c096c-5a189a-7b2cbf-9d4edd-c77dff-e0aaff
+3.  https://coolors.co/palette/fdc5f5-f7aef8-b388eb-8093f1-72ddf7
+*/
+
+/* universal selector: selects everything, not very commonly used */
+/* * { 
+    background-color: aqua;
+} */
+
+
+/* cascade in css means code is executed top to bottom, so if u set something to have 2 different bg colors, the last one will apply */
+/* the above also applies when u have multiple css files linked */
+
+
+/* specificity: when theres a conflict, and something has higher specificity, the top to bottom order no longer applies */
+
+
+/* element selector: selects all of an element in a page */
+button {
+    font-size: 30px;
+    background-color: #5390d9ff;
+}
+
+/* comma to combine selectors */
+h1, h2 {
+    color: #7400b8ff;
+}
+
+body {
+    background-color: #80FFDB;
+}
+
+#signUp {
+    background-color: #6930c3ff;
+    color: #72efddff;
+}
+
+span {
+    color: gray;
+}
+
+.post a {
+    color: gray;
+}
+
+.tag {
+    background-color: #7400b8ff;
+    color: #48bfe3ff;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+a {
+    font-weight: 700;
+    text-decoration: none;
+}
+
+footer a {
+    color: #5e60ceff;
+}
+
+/* this selects all buttons that are located immediately after an input */
+input + button {
+    background-color: pink;
+}
+
+h2 + button {
+    font-size: 20px;
+}
+
+/* x > y selects all y that are directy inside of an x (not inside something thats inside an x) */
+footer > a {
+    color: grey;
+}
+
+
+/* Attribute selector: this selects all inputs of type password */
+    input[type="password"] {
+        color: red;
+    }
+    /* it would make more sense to just do .post below but *//* section.post would also work */
+    /* section[class="post"] {
+        background-color: #7400b8ff;
+    } */
+
+    /* this selects any a tags where the href contains "google". Note: this isnt limited to hrefs */
+    a[href*="google"] {
+        color: magenta;
+    }
+
+
+/* pseudo classes */
+    a:hover {
+        opacity: .5;
+        text-decoration: underline;
+    }
+    .post button:hover {
+    background-color: pink;
+    }
+    /* this applies when the button is being clicked on, so youd have to hold down the button to really see it */
+    .post button:active {
+        background-color: #02c39a;
+    }
+    /* theres also checked, for like a radio button or something */
+    /* nth of type. This would select just the 3rd one */
+    .post:nth-of-type(3) {
+        background-color: aliceblue;
+    }
+    /* nth of type. This would select every 2nd, starting with the first one */
+    .post:nth-of-type(2n - 1) {
+        background-color: aliceblue;
+    }
+
+
+/* pseudo elements */
+    /* this selects the first letter of every h2 */
+    h2::first-letter {
+        font-size: 32px;
+    }
+    p::first-line {
+        color: purple;
+    }
+    /* this changes what it looks like when the user highlights text in the p */
+    p::selection {
+        background-color: #02c39a;
+    }
+    /* selects the element before the p */
+    p::before {
+        background-color: orange;
+    }
+
+
+/* specificity */
+    button:hover {
+        background-color: orangered;
+        font-size: 10px;
+    }
+
+    /* order of operations in terms of highest specificness to lowest: ID, class, element */
+    /* if theres a tie in order of opps, then it helps to have more elements in the selector: "div p" wins over "p" */
+    /* u can use a specificity calculator to see what selector will win */
+
+    /* inline styles (like in ur html page) are the most specific of all. this is a good reason for avoiding them */
+
+    /* !important: also bad practice, automatically makes the thing overwrite all other things, regardless of specificity */
