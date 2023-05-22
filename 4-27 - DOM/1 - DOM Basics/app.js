@@ -60,15 +60,52 @@
     }
 
     // you can use window to get all the current styles of an element
-    window.getComputedStyle('h1').color;
+    //window.getComputedStyle('h1').color;
 
+    // classlist
+    const h2 = document.querySelector('h2')
+    h2.setAttribute('class', 'purple')
 
+    //h2.classList.add('border')
+    h2.classList.toggle('border') // switches whether or not a class is in the class list
 
+    // select parent/child/sibling
+    const squareImg = document.querySelector('.square')
+    squareImg.nextElementSibling
+    squareImg.previousElementSibling
 
+    // create element
+    const newImg = document.createElement('img')
+    newImg.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Silky_bantam.jpg/440px-Silky_bantam.jpg'
+    document.body.appendChild(newImg)
 
+    const newH3 = document.createElement('h3')
+    newH3.innerText = 'new h3'
+    document.body.appendChild(newH3)
 
+    // append text inside of a p element
+    const p = document.querySelector('p')
+    p.append('this is a bunch of appended text')
+    
+    // create a 'b' element
+    const newB = document.createElement('b')
+    newB.append('hi')
+    p.prepend(newB)
 
+    // another example
+    const h3 = document.createElement('h3')
+    h3.append('new h3 text')
+    const hOne = document.querySelector('h1')
+    hOne.insertAdjacentElement('afterend', h3)
 
+    // remove child
+    const firstLi = document.querySelector('li')
+    const ul = firstLi.parentElement
+    ul.removeChild(firstLi)
+    // or firstLi.parentElement.removeChild(firstLi)
 
+    // remove
+    const secondLi = document.querySelector('li')
+    secondLi.remove()
 
 
