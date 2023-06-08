@@ -1,23 +1,24 @@
-const fakeRequest = (url) => {
+
+function fakeRequest(url) {
     return new Promise((resolve, reject) => {
-        const rand = Math.random();
+        const rand = Math.random()
         setTimeout(() => {
-            if (rand < 0.7) {
-                resolve('YOUR FAKE DATA HERE');
+            if (rand < .7) {
+                resolve('resolved')
             }
-            reject('Request Error!');
+            reject('error') // resolve() works like a return, so we dont need to put reject inside an else here
         }, 1000)
     })
 }
 
-fakeRequest('/dogs/1')
+fakeRequest('dogs/')
     .then((data) => {
-        console.log("DONE WITH REQUEST!")
-        console.log('data is:', data)
+        console.log('done with request', data)
     })
-    .catch((err) => {
-        console.log("OH NO!", err)
+    .catch((error) => {
+        console.log('error', error)
     })
+
 
 
 // const delayedColorChange = (newColor, delay, doNext) => {
@@ -43,17 +44,19 @@ fakeRequest('/dogs/1')
 //     })
 // });
 
-
 const delayedColorChange = (color, delay) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             document.body.style.backgroundColor = color;
-            resolve();
+            resolve()
         }, delay)
     })
 }
 
 
+/* delayedColorChange('red', 1000)
+delayedColorChange('orange', 1000) */ // these will happen at the same time, so we cant just do this
+    
 delayedColorChange('red', 1000)
     .then(() => delayedColorChange('orange', 1000))
     .then(() => delayedColorChange('yellow', 1000))
@@ -61,3 +64,6 @@ delayedColorChange('red', 1000)
     .then(() => delayedColorChange('blue', 1000))
     .then(() => delayedColorChange('indigo', 1000))
     .then(() => delayedColorChange('violet', 1000))
+
+
+    

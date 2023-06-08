@@ -95,6 +95,24 @@ request
 //     })
 
 
+
+
+fakeRequestPromise('yelp.com/api/coffee/page1')
+    .then((data) => {
+        console.log('success')
+        console.log(data) // can print the message being returned from the fakeRequestPromise function
+        return fakeRequestPromise('yelp.com/api/coffee/page1')
+    })
+    .then(() => {
+        console.log('success')
+        return fakeRequestPromise('yelp.com/api/coffee/page1')
+    })
+    .catch((error) => { // can use one catch for all of the requests
+        console.log('failed')
+        console.log(error) // can print the error message returned
+    })
+
+
 // THE CLEANEST OPTION WITH THEN/CATCH
 // RETURN A PROMISE FROM .THEN() CALLBACK SO WE CAN CHAIN!
 fakeRequestPromise('yelp.com/api/coffee/page1')
