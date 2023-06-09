@@ -88,3 +88,61 @@ console.log(jsonDog)
     loadData('https://swapi.dev/api/people/5/')
 
 
+
+
+// axios (a separate library that is not native to js) - have to include the axios script in the html doc
+    axios.get('https://swapi.dev/api/people/1/')
+        .then(response => {
+            console.log(response) // saves us from returning the .json, because its already parsed and included in the response now
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+    const getPerson = async (n) => {
+        try {
+            const response = await axios.get(`https://swapi.dev/api/people/${n}/`)
+            console.log(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    getPerson(5)
+
+
+// setting headers with axios
+
+    // do some DOM manipulation
+    const jokes = document.querySelector('#jokes')
+    const button = document.querySelector('button')
+
+    const addNewJoke = async () => {
+        const joke = await getDadJoke() // add async to the line above and await here since getDadJoke returns a promise
+
+        // add the joke to the document object
+        const newLi = document.createElement('li')
+        newLi.append(joke)
+        jokes.append(newLi)
+        
+    }
+
+    const getDadJoke = async () => {
+        try { // need error handling incase api is down or something
+            // create the header
+            const config = {headers: {Accept: 'application/json'}}
+    
+            const response = await axios.get('https://icanhazdadjoke.com/', config)
+            console.log(response)
+            console.log(response.data.joke)
+    
+            return response.data.joke
+        } catch (error) {
+            return 'no jokes available'
+        }
+    }
+
+    // add an event listener
+    button.addEventListener('click', addNewJoke)
+
+
