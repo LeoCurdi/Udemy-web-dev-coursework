@@ -1,0 +1,40 @@
+
+// why use terminal?
+	// can be faster than using a GUI
+	// but mainly out of necessity. the terminal provides access that you dont have in the GUI
+		// can create and modify hidden files etc
+	// also need terminal for many tools such as Node
+
+// vocab
+	// shell: the program running on the terminal
+	// bash: one of the most popular shells. aka git bash
+
+
+
+// Note: file names with a space in them can be handled by putting a \ before the space. ex: coding\ projects
+
+
+ls // lists all contents of the current directory
+
+dir // equivalent to ls
+
+pwd // tells you what directory youre in
+
+cd <folder name> // moves you into a folder within your current directory
+	// can cd multiple in one shot by adding a / between directory names. ex: cd spring/math273
+	// can cd an absolute path no matter what dir youre currently in. ex: cd /users/ldcurdi/...
+	// can cd to the root directory. ex: cd /
+	// can cd to the home directory. ex: cd ~
+
+cd .. // moves you out to the current parent directory
+	// can cd .. mutiple times in one shot. ex: cd ../..
+
+mkdir <folder name> // creates a new folder in the current directory
+
+touch <name>.<fileType> // ex: touch notes.txt // create a specific type of file
+	// if you touch a file that already exists, it updates the file's last modified time. this is the intended purpose of touch, but it's primarily used to make files
+
+rm <file name>.<file type> // removes a file. WARNING: the file will not go to recycle, it will be completely gone. DO NOT accidentally do this
+	// rm cannot be used on folders
+
+rmdir <folder name> // removes a folder. folder has to be empty for it to work
