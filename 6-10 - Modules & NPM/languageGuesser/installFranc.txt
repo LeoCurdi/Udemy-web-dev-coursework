@@ -1,0 +1,6 @@
+
+// we need franc version 5.0.0 to follow along with Colt in his video
+
+// heres how to install that version:
+	
+	'npm install franc@5.0.0'
