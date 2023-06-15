@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random</title>
+</head>
+<body>
+    <!-- <h1>Your random number is: < %= Math.floor(Math.random() * 10) + 1 %></h1> -->
+    <!-- the method for getting a random number above is bad practice as templates souldnt contain logic, they shuld just display things -->
+    <!-- the following is best practice -->
+    <h1>Your random number is: <%= rand %></h1>
+
+    <!-- conditionals (notice the if elses dont have an =) -->
+    <% if (rand % 2 === 0) { %>
+        <h2> <%= rand %> is an even number</h2>
+    <% } else { %>
+        <h2> <%= rand %> is an odd number</h2>
+    <% } %>
+
+    <!-- alternate way of acomplishing the above -->
+    <h2> <%= rand %> is an <%= rand % 2 === 0 ? 'even' : 'odd' %> number</h2>
+
+</body>
+</html>
