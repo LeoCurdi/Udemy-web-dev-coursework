@@ -1,0 +1,2 @@
+
+If the 'mongo' command doesn't work, use 'mongosh'
