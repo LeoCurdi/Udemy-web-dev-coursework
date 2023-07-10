@@ -1,0 +1,58 @@
+
+If the 'mongo' command doesn't work, use 'mongosh'
+
+// starting mongo server:
+	- open command prompt with administrative privelage: hit run as administrator
+	- type: 'net start MongoDB
+	- open a git bash in my project folder
+	- type: 'mongosh'
+	// we have to run as admin because i dont have access by default to start the mongo server
+
+
+// CRUD with mongo:
+
+// Create: inserting data in mongo: BSON format
+	- show dbs // show a list of all databases
+	- use <db name> // puts you in a specified database
+	- db // shows what database you're currently in
+	- show collections // shows all collections in the database you're in
+
+	- db.<name>.insertOne
+		ex: db.dogs.insertOne({name: 'Charlie', age: 3, breed: 'corgi', isCatFriendly: true})
+		// this line will insert a js object into the dogs collection of the database, and convert it to bson
+
+	- db.dogs.find() // will show the above example if it has been inserted
+
+	- db.<name>.insert // will let you insert multiple objects using an array
+		ex: db.dogs.insert([{name: 'Wyatt', age: 2}, {name: 'Jake', age: 4}])
+
+// Read: finding
+	ex: db.dogs.find({age: 2}) // will show all dogs with an age value of 2
+	
+// Update
+	// confusing syntax using $set
+	ex: update Jakes age to 5
+		- db.dogs.updateOne({name: 'Jake'}, {$set: {age: 5}})
+
+	// you can 'update' properties that dont exist and it will just create the property and add it
+		ex: db.dogs.updateOne({name: 'Jake'}, {$set: {hair: 'brown'}})
+		// will create a hair property and add it to Jake
+	
+	- db.dogs.updateMany({isCatFriendly: true}, {$set {isAdopted: true}})
+		// mark all cat friendly dogs as adopted in one go using update many
+
+	- db.dogs.updateOne({age: 6}, {$set: {age: 7}, $currentdate: {lastChanged: true}})
+		// will save the date that the object was updated
+
+// Delete
+	- db.dogs.deleteOne({name: 'Jake'}) // will delete Jake from the collection
+		
+	- db.dogs.deleteMany({isAdopted: true}) // delete all dogs that have been adopted
+
+	- db.dogs.Many({}) // deletes the entire collection
+
+
+// misc mongo operators
+	- db.dogs.find({'personality.isChildFreindly': true}) // find an object based on a nested property
+	- db.dogs.find({age: {$gt: 8}}) // find all dogs that are older than 8
+	- db.dogs.find({age: {$gt: 8}}, {age: {$lt: 12}}) // find all dogs between 8-12
