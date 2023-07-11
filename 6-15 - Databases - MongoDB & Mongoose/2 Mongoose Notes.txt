@@ -1,2 +1,6 @@
 
 // Mongoose let's you connect MongoDB to Node and JS
+
+// have to install it at the start of every project so:
+	- npm init -y // create the package.json file
+	- npm i mongoose

@@ -1,0 +1,8 @@
+
+	- open terminal
+	- 'node'
+	- '.load index.js'
+	- open another terminal
+	- 'mongosh'
+	- 'use movies'
+	- 'db.movies.find()' // this will show all movie items that have been saved to the movies database
