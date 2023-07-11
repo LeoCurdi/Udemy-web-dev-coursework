@@ -1,0 +1,8 @@
+
+	- npm init -y
+	- npm i express ejs mongoose method-override
+	
+	- node seeds.js // run the seeds file once which will fill the database with initial data
+
+	- nodemon index.js
+	
