@@ -4,6 +4,8 @@ const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate')
+const wrapAsync = require('./utilities/wrapAsync')
+const ExpressError = require('./utils/ExpressError')
 const methodOverride = require('method-override')
 const Campground = require('./models/campground') // import the campground model
 
@@ -32,46 +34,63 @@ app.engine('ejs', ejsMate)
         //res.send('hello from yelpcamp!')
         res.render('home')
     })
-    app.get('/campgrounds', async (req, res) => {
+    app.get('/campgrounds', wrapAsync(async (req, res) => {
         const campgrounds = await Campground.find({}) // grab all campgrounds
         res.render('campgrounds/index', {campgrounds})
-    })
+    }))
 
     // create
     app.get('/campgrounds/new', (req, res) => {
         res.render('campgrounds/new')
     })
-    app.post('/campgrounds', async (req, res) => {
-        const campground = new Campground(req.body.campground)
-        await campground.save()
-        res.redirect(`/campgrounds/${campground._id}`)
-    })
+    app.post('/campgrounds', wrapAsync(async (req, res) => {
+        // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
+        //try { // we no longer need a try catch in here since we have the wrap async function
+            const campground = new Campground(req.body.campground)
+            await campground.save()
+            res.redirect(`/campgrounds/${campground._id}`)
+        //} catch (e) { // if we get an error this will send us to the custom error handler (app.use) we put in down below
+        //    next(e)
+        //}
+    }))
 
     // read (show details)
-    app.get('/campgrounds/:id', async (req, res) => {
+    app.get('/campgrounds/:id', wrapAsync(async (req, res) => {
         const campground = await Campground.findById(req.params.id)
         res.render('campgrounds/show', {campground})
-    })
+    }))
 
     // update
-    app.get('/campgrounds/:id/edit', async (req, res) => {
+    app.get('/campgrounds/:id/edit', wrapAsync(async (req, res) => {
         const campground = await Campground.findById(req.params.id)
         res.render('campgrounds/edit', {campground})
-    })
-    app.put('/campgrounds/:id', async (req, res) => {
+    }))
+    app.put('/campgrounds/:id', wrapAsync(async (req, res) => {
         //res.send('it worked!')
         const {id} = req.params
         const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) // using the spread operator
         res.redirect(`/campgrounds/${campground._id}`)
-    })
+    }))
 
     // delete
-    app.delete('/campgrounds/:id', async (req, res) => { // could use any route here besides a get but were going with delete
+    app.delete('/campgrounds/:id', wrapAsync(async (req, res) => { // could use any route here besides a get but were going with delete
         // were using method override in the html form to send a post request as a delete
         
         const {id} = req.params
         await Campground.findByIdAndDelete(id)
         res.redirect('/campgrounds')
+    }))
+
+
+    // error handler (this will catch every error that comes from a wrapAsync function)
+    app.all('*', (req, res, next) => { // * will respond to all requests
+        //res.send('404!!!')
+        next(new ExpressError('Page Not Found', 404)) // this will pass the error down to the app.use below
+    })
+
+    app.use((err, req, res, next) => {
+        const {statusCode = 500, message = 'Something went wrong'} = err // when destructuring, its a good idea to give everything a default value
+        res.status(statusCode).send(message)
     })
 
 
