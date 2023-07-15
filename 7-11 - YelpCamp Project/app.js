@@ -4,8 +4,9 @@ const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate')
+const {campgroundSchema} = require('./schemas.js')
 const wrapAsync = require('./utilities/wrapAsync')
-const ExpressError = require('./utils/ExpressError')
+const ExpressError = require('./utilities/ExpressError')
 const methodOverride = require('method-override')
 const Campground = require('./models/campground') // import the campground model
 
@@ -29,6 +30,22 @@ app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
 app.engine('ejs', ejsMate)
 
+// this is a middleware function that will be used for form validation
+// here we use joi to set up some validation / error handling that will work if soemone sends a post request through something like postman
+const validateCampground = (req, res, next) => {
+    const {error} = campgroundSchema.validate(req.body)
+    //console.log(result)
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    }
+    else {
+        next() // we have to call next on success in order to make it past the middleware
+    }
+}
+
+
+
 // routes
     app.get('/', (req, res) => {
         //res.send('hello from yelpcamp!')
@@ -43,12 +60,13 @@ app.engine('ejs', ejsMate)
     app.get('/campgrounds/new', (req, res) => {
         res.render('campgrounds/new')
     })
-    app.post('/campgrounds', wrapAsync(async (req, res) => {
+    app.post('/campgrounds', validateCampground, wrapAsync(async (req, res) => { // were passing in the validate campground function as an argument to the route
         // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
         //try { // we no longer need a try catch in here since we have the wrap async function
-            const campground = new Campground(req.body.campground)
-            await campground.save()
-            res.redirect(`/campgrounds/${campground._id}`)
+        
+        const campground = new Campground(req.body.campground)
+        await campground.save()
+        res.redirect(`/campgrounds/${campground._id}`)
         //} catch (e) { // if we get an error this will send us to the custom error handler (app.use) we put in down below
         //    next(e)
         //}
@@ -65,7 +83,7 @@ app.engine('ejs', ejsMate)
         const campground = await Campground.findById(req.params.id)
         res.render('campgrounds/edit', {campground})
     }))
-    app.put('/campgrounds/:id', wrapAsync(async (req, res) => {
+    app.put('/campgrounds/:id', validateCampground, wrapAsync(async (req, res) => {
         //res.send('it worked!')
         const {id} = req.params
         const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) // using the spread operator
@@ -89,8 +107,9 @@ app.engine('ejs', ejsMate)
     })
 
     app.use((err, req, res, next) => {
-        const {statusCode = 500, message = 'Something went wrong'} = err // when destructuring, its a good idea to give everything a default value
-        res.status(statusCode).send(message)
+        const {statusCode = 500} = err // when destructuring, its a good idea to give everything a default value
+        if (!err.message) err.message = 'Something went wrong'
+        res.status(statusCode).render('error', {err})
     })
 
 
