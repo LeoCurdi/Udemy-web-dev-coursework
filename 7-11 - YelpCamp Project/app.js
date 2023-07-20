@@ -4,15 +4,16 @@ const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate')
-const {campgroundSchema} = require('./schemas.js')
+const {campgroundSchema, reviewSchema} = require('./schemas.js')
 const wrapAsync = require('./utilities/wrapAsync')
 const ExpressError = require('./utilities/ExpressError')
 const methodOverride = require('method-override')
 const Campground = require('./models/campground') // import the campground model
+const Review = require('./models/review')
 
 
 // connect mongoose. the link says which port and database to use. lets create and use a movies database
-mongoose.connect('mongodb://127.0.0.1:27017/yelpCamp'/* , {useNewUrlParser: true} */) // passing in options is no longer required
+mongoose.connect('mongodb://127.0.0.1:27017/yelpCamp') // passing in options is no longer required
 
 // mongoose connection logic
 const db = mongoose.connection;
@@ -44,6 +45,17 @@ const validateCampground = (req, res, next) => {
     }
 }
 
+const validateReview = (req, res, next) => {
+    const {error} = reviewSchema.validate(req.body)
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    }
+    else {
+        next() // we have to call next on success in order to make it past the middleware
+    }
+}
+
 
 
 // routes
@@ -56,7 +68,7 @@ const validateCampground = (req, res, next) => {
         res.render('campgrounds/index', {campgrounds})
     }))
 
-    // create
+    // create campground
     app.get('/campgrounds/new', (req, res) => {
         res.render('campgrounds/new')
     })
@@ -72,13 +84,13 @@ const validateCampground = (req, res, next) => {
         //}
     }))
 
-    // read (show details)
+    // read (show details) campground
     app.get('/campgrounds/:id', wrapAsync(async (req, res) => {
-        const campground = await Campground.findById(req.params.id)
+        const campground = await Campground.findById(req.params.id).populate('reviews')
         res.render('campgrounds/show', {campground})
     }))
 
-    // update
+    // update campground
     app.get('/campgrounds/:id/edit', wrapAsync(async (req, res) => {
         const campground = await Campground.findById(req.params.id)
         res.render('campgrounds/edit', {campground})
@@ -90,13 +102,34 @@ const validateCampground = (req, res, next) => {
         res.redirect(`/campgrounds/${campground._id}`)
     }))
 
-    // delete
+    // delete campground
     app.delete('/campgrounds/:id', wrapAsync(async (req, res) => { // could use any route here besides a get but were going with delete
         // were using method override in the html form to send a post request as a delete
         
         const {id} = req.params
-        await Campground.findByIdAndDelete(id)
+        // when we delete a campground, we must delete all reviews for the campground as well
+        await Campground.findByIdAndDelete(id) // the middleware that is called by findByIdAndDelete is FindOneAndDelete, so we use that middleware inside campground.js to delete all reviews
         res.redirect('/campgrounds')
+    }))
+
+
+
+    // post review
+    app.post('/campgrounds/:id/reviews', validateReview, wrapAsync(async (req, res) => {
+        const campground = await Campground.findById(req.params.id)
+        const review = new Review(req.body.review)
+        campground.reviews.push(review)
+        await review.save()
+        await campground.save()
+        res.redirect(`/campgrounds/${campground._id}`)
+    }))
+
+    // delete review
+    app.delete('/campgrounds/:id/reviews/:reviewId', wrapAsync(async (req, res) => {
+        const { id, reviewId } = req.params;
+        await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+        await Review.findByIdAndDelete(reviewId);
+        res.redirect(`/campgrounds/${id}`);
     }))
 
 

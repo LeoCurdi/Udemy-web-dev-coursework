@@ -10,3 +10,12 @@ module.exports.campgroundSchema = Joi.object({
         description: Joi.string().required()
     }).required()
 })
+
+
+module.exports.reviewSchema = Joi.object({
+    review: Joi.object({
+        rating: Joi.number().required().min(1).max(5),
+        body: Joi.string().required()
+    }).required() // this required is very important. if we dont say required here it wont validate that the form is not empty
+})
+

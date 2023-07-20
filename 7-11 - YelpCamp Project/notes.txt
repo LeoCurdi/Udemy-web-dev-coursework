@@ -5,3 +5,4 @@
 	- node seeds/index.js // run the seeds file once which will populate the database with initial data
 
 	- nodemon app.js // start the server
+	- mongosh // access mongoDB shell
