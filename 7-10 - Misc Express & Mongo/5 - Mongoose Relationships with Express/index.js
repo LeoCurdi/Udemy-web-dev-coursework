@@ -9,13 +9,12 @@ const Farm = require('./models/farm')
 const categories = ['fruit', 'vegetable', 'dairy'];
 
 
-mongoose.connect('mongodb://localhost:27017/farmStandTake2', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://127.0.0.1:27017/expressRelationshipDemo')
     .then(() => {
-        console.log("MONGO CONNECTION OPEN!!!")
+        console.log('Mongo connection open!')
     })
-    .catch(err => {
-        console.log("OH NO MONGO CONNECTION ERROR!!!!")
-        console.log(err)
+    .catch(error => {
+        console.log('Mongo connection error', error)
     })
 
 
@@ -24,6 +23,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'))
+
 
 // FARM ROUTES
 
@@ -34,24 +34,24 @@ app.get('/farms', async (req, res) => {
 app.get('/farms/new', (req, res) => {
     res.render('farms/new')
 })
+// any /:id routes must come at the end because otherwise express will think something like '/new' is an id
 app.get('/farms/:id', async (req, res) => {
     const farm = await Farm.findById(req.params.id).populate('products');
     res.render('farms/show', { farm })
 })
 
 app.delete('/farms/:id', async (req, res) => {
+    // findByIdAndDelete will call middleware 'findOneAndDelete' so we can use that middleware to delete all products associated with the farm being deleted
     const farm = await Farm.findByIdAndDelete(req.params.id);
 
     res.redirect('/farms');
 })
 
 
-
-
 app.post('/farms', async (req, res) => {
     const farm = new Farm(req.body);
     await farm.save();
-    res.redirect('/farms')
+    res.redirect('/farms') // put the user back to the farms page after makinga  new farm
 })
 
 app.get('/farms/:id/products/new', async (req, res) => {
@@ -60,16 +60,17 @@ app.get('/farms/:id/products/new', async (req, res) => {
     res.render('products/new', { categories, farm })
 })
 
+// create a new product
 app.post('/farms/:id/products', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params; // get the farm by id
     const farm = await Farm.findById(id);
-    const { name, price, category } = req.body;
+    const { name, price, category } = req.body; // get all info for the new product from the submitted form
     const product = new Product({ name, price, category });
-    farm.products.push(product);
-    product.farm = farm;
+    farm.products.push(product); // push the id of the product onto the associated farm
+    product.farm = farm; // give the product the id of the farm as well
     await farm.save();
     await product.save();
-    res.redirect(`/farms/${id}`)
+    res.redirect(`/farms/${id}`) // redirect the user to the page for the farm they added a product to
 })
 
 
@@ -120,6 +121,8 @@ app.delete('/products/:id', async (req, res) => {
     const deletedProduct = await Product.findByIdAndDelete(id);
     res.redirect('/products');
 })
+
+
 
 
 
