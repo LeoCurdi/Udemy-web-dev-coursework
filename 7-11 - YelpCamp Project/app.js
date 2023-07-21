@@ -4,12 +4,13 @@ const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate')
-const {campgroundSchema, reviewSchema} = require('./schemas.js')
-const wrapAsync = require('./utilities/wrapAsync')
+const session = require('express-session')
+const flash = require('connect-flash')
 const ExpressError = require('./utilities/ExpressError')
 const methodOverride = require('method-override')
-const Campground = require('./models/campground') // import the campground model
-const Review = require('./models/review')
+
+const campgrounds = require('./routes/campgrounds')
+const reviews = require('./routes/reviews')
 
 
 // connect mongoose. the link says which port and database to use. lets create and use a movies database
@@ -25,36 +26,34 @@ db.once("open", () => {
 
 // middleware
 const app = express()
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
-app.use(express.urlencoded({extended: true}))
-app.use(methodOverride('_method'))
 app.engine('ejs', ejsMate)
 
-// this is a middleware function that will be used for form validation
-// here we use joi to set up some validation / error handling that will work if soemone sends a post request through something like postman
-const validateCampground = (req, res, next) => {
-    const {error} = campgroundSchema.validate(req.body)
-    //console.log(result)
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    }
-    else {
-        next() // we have to call next on success in order to make it past the middleware
-    }
-}
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
 
-const validateReview = (req, res, next) => {
-    const {error} = reviewSchema.validate(req.body)
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    }
-    else {
-        next() // we have to call next on success in order to make it past the middleware
+app.use(express.urlencoded({extended: true}))
+app.use(methodOverride('_method'))
+app.use(express.static(path.join(__dirname, 'public')))
+
+const sessionConfig = {
+    secret: 'thisisasecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + (1000 * 60 * 60 * 24 * 7), // thats in milliseconds so this says expire a week from now
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+app.use(session(sessionConfig))
+app.use(flash())
+
+// flash middleware
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success')
+    res.locals.error = req.flash('error')
+    next()
+})
 
 
 
@@ -63,74 +62,14 @@ const validateReview = (req, res, next) => {
         //res.send('hello from yelpcamp!')
         res.render('home')
     })
-    app.get('/campgrounds', wrapAsync(async (req, res) => {
-        const campgrounds = await Campground.find({}) // grab all campgrounds
-        res.render('campgrounds/index', {campgrounds})
-    }))
 
-    // create campground
-    app.get('/campgrounds/new', (req, res) => {
-        res.render('campgrounds/new')
-    })
-    app.post('/campgrounds', validateCampground, wrapAsync(async (req, res) => { // were passing in the validate campground function as an argument to the route
-        // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
-        //try { // we no longer need a try catch in here since we have the wrap async function
-        
-        const campground = new Campground(req.body.campground)
-        await campground.save()
-        res.redirect(`/campgrounds/${campground._id}`)
-        //} catch (e) { // if we get an error this will send us to the custom error handler (app.use) we put in down below
-        //    next(e)
-        //}
-    }))
+    // all campground routes come from this router
+    app.use('/campgrounds', campgrounds)
 
-    // read (show details) campground
-    app.get('/campgrounds/:id', wrapAsync(async (req, res) => {
-        const campground = await Campground.findById(req.params.id).populate('reviews')
-        res.render('campgrounds/show', {campground})
-    }))
-
-    // update campground
-    app.get('/campgrounds/:id/edit', wrapAsync(async (req, res) => {
-        const campground = await Campground.findById(req.params.id)
-        res.render('campgrounds/edit', {campground})
-    }))
-    app.put('/campgrounds/:id', validateCampground, wrapAsync(async (req, res) => {
-        //res.send('it worked!')
-        const {id} = req.params
-        const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) // using the spread operator
-        res.redirect(`/campgrounds/${campground._id}`)
-    }))
-
-    // delete campground
-    app.delete('/campgrounds/:id', wrapAsync(async (req, res) => { // could use any route here besides a get but were going with delete
-        // were using method override in the html form to send a post request as a delete
-        
-        const {id} = req.params
-        // when we delete a campground, we must delete all reviews for the campground as well
-        await Campground.findByIdAndDelete(id) // the middleware that is called by findByIdAndDelete is FindOneAndDelete, so we use that middleware inside campground.js to delete all reviews
-        res.redirect('/campgrounds')
-    }))
+    // all reviews routes come from this router
+    app.use('/campgrounds/:id/reviews', reviews)
 
 
-
-    // post review
-    app.post('/campgrounds/:id/reviews', validateReview, wrapAsync(async (req, res) => {
-        const campground = await Campground.findById(req.params.id)
-        const review = new Review(req.body.review)
-        campground.reviews.push(review)
-        await review.save()
-        await campground.save()
-        res.redirect(`/campgrounds/${campground._id}`)
-    }))
-
-    // delete review
-    app.delete('/campgrounds/:id/reviews/:reviewId', wrapAsync(async (req, res) => {
-        const { id, reviewId } = req.params;
-        await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-        await Review.findByIdAndDelete(reviewId);
-        res.redirect(`/campgrounds/${id}`);
-    }))
 
 
     // error handler (this will catch every error that comes from a wrapAsync function)

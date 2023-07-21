@@ -12,7 +12,7 @@ app.use(flash());
 const Farm = require('./models/farm')
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/yelpCamp')
+mongoose.connect('mongodb://127.0.0.1:27017/authDemo')
     .then(() => {
         console.log("MONGO CONNECTION OPEN!!!")
     })
