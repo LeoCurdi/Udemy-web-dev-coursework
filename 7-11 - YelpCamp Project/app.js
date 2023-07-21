@@ -8,9 +8,13 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const ExpressError = require('./utilities/ExpressError')
 const methodOverride = require('method-override')
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
 
-const campgrounds = require('./routes/campgrounds')
-const reviews = require('./routes/reviews')
+const User = require('./models/user')
+const campgroundRoutes = require('./routes/campgrounds')
+const reviewRoutes = require('./routes/reviews')
+const userRoutes = require('./routes/users')
 
 
 // connect mongoose. the link says which port and database to use. lets create and use a movies database
@@ -45,11 +49,20 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
-app.use(session(sessionConfig))
+app.use(session(sessionConfig)) // this line has to come before the next 2
+
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
+
 app.use(flash())
 
 // flash middleware
 app.use((req, res, next) => {
+    res.locals.currentUser = req.user // always track whose logged in
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
     next()
@@ -58,17 +71,25 @@ app.use((req, res, next) => {
 
 
 // routes
+/*     app.get('/fakeuser', async (req, res) => {
+        const user = new User({email: 'cold@email.com', username: 'colt'})
+        const newUser = await User.register(user, 'chicken')
+        res.send(newUser)
+    }) */
+
     app.get('/', (req, res) => {
         //res.send('hello from yelpcamp!')
         res.render('home')
     })
 
+    // user routes
+    app.use('/', userRoutes)
+
     // all campground routes come from this router
-    app.use('/campgrounds', campgrounds)
+    app.use('/campgrounds', campgroundRoutes)
 
     // all reviews routes come from this router
-    app.use('/campgrounds/:id/reviews', reviews)
-
+    app.use('/campgrounds/:id/reviews', reviewRoutes)
 
 
 

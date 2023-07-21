@@ -6,7 +6,7 @@ const wrapAsync = require('../utilities/wrapAsync')
 const {campgroundSchema} = require('../schemas.js')
 const ExpressError = require('../utilities/ExpressError')
 const Campground = require('../models/campground') // import the campground model
-
+const {isLoggedIn} = require('../middleware')
 
 
 // this is a middleware function that will be used for form validation
@@ -32,10 +32,10 @@ router.get('/', wrapAsync(async (req, res) => {
 }))
 
 // create campground
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => { // validate if user is logged in
     res.render('campgrounds/new')
 })
-router.post('/', validateCampground, wrapAsync(async (req, res) => { // were passing in the validate campground function as an argument to the route
+router.post('/', isLoggedIn, validateCampground, wrapAsync(async (req, res) => { // were passing in the validate campground function as an argument to the route
     // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
     //try { // we no longer need a try catch in here since we have the wrap async function
 
@@ -65,7 +65,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
 }))
 
 // update campground
-router.get('/:id/edit', wrapAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, wrapAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id)
         
     // if someone searches for a campground that doesnt exist
@@ -76,7 +76,7 @@ router.get('/:id/edit', wrapAsync(async (req, res) => {
 
     res.render('campgrounds/edit', {campground})
 }))
-router.put('/:id', validateCampground, wrapAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, validateCampground, wrapAsync(async (req, res) => {
     //res.send('it worked!')
     const {id} = req.params
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) // using the spread operator
@@ -88,7 +88,7 @@ router.put('/:id', validateCampground, wrapAsync(async (req, res) => {
 }))
 
 // delete campground
-router.delete('/:id', wrapAsync(async (req, res) => { // could use any route here besides a get but were going with delete
+router.delete('/:id', isLoggedIn, wrapAsync(async (req, res) => { // could use any route here besides a get but were going with delete
     // were using method override in the html form to send a post request as a delete
     
     const {id} = req.params
