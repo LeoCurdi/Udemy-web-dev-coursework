@@ -28,7 +28,7 @@ const userRoutes = require('./routes/users')
 
 // connect mongoose. the link says which port and database to use. lets create and use a movies database
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelpCamp'
-mongoose.connect(dbUrl/* 'mongodb://127.0.0.1:27017/yelpCamp' */) // passing in options is no longer required
+mongoose.connect(dbUrl) // passing in options is no longer required
 // mongoose connection logic
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -179,6 +179,7 @@ app.use((err, req, res, next) => {
 
 
 // set up localhost port
-app.listen(3000, () => {
-    console.log('listening on port 3000!')
+const port = process.env.PORT || 3000
+app.listen(port, () => {
+    console.log(`listening on port ${port}!`)
 })
