@@ -2,4 +2,4 @@
 // this will ignore all instances of node_modules folder, regardless of which sub directories they are in
 **/node_modules/
 
-7-11\ -\ YelpCamp\ Project/.env
+7-11 - YelpCamp Project/.env
