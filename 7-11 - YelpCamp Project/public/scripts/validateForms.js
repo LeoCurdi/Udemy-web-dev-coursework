@@ -2,6 +2,9 @@
 (function () {
     'use strict'
 
+    // bootstrap js for modifying file input
+    bsCustomFileInput.init()
+
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.querySelectorAll('.validated-form')
 

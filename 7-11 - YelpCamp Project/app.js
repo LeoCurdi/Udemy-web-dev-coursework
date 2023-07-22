@@ -1,4 +1,8 @@
 
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
+
 // boilerplate
 const express = require('express')
 const path = require('path')
@@ -71,11 +75,6 @@ app.use((req, res, next) => {
 
 
 // routes
-/*     app.get('/fakeuser', async (req, res) => {
-        const user = new User({email: 'cold@email.com', username: 'colt'})
-        const newUser = await User.register(user, 'chicken')
-        res.send(newUser)
-    }) */
 
     app.get('/', (req, res) => {
         //res.send('hello from yelpcamp!')
