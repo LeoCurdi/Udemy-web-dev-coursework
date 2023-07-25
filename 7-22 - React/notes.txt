@@ -1,7 +1,7 @@
 
  - A react component is just a function that returns jsx code which compiles into html
 
- - Create React app steps:
+ - Create React app with Vite steps:
 	- 'npm create vite@latest'
 	- name project
 	- use arrow keys to select React // git bash doesnt support an interactive terminal, use windows or vs code
